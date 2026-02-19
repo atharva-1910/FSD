@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: #ffffff;
+      border: 1px solid #d1d9e0;
+      border-radius: 16px;
+      padding: 40px;
+      width: 420px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      color: #c0392b;
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      color: #444;
+      font-size: 13px;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      background: #f8f9fa;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      color: #222;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    input:focus {
+      border-color: #c0392b;
+      box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
+      background: #fff;
+    }
+
+    input.error-field {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.12);
+      background: #fff8f8;
+    }
+
+    input.success-field {
+      border-color: #27ae60;
+      box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.12);
+      background: #f8fff9;
+    }
+
+    .error-msg {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background: #c0392b;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      margin-top: 8px;
+    }
+
+    button[type="submit"]:hover {
+      background: #a93226;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(192, 57, 43, 0.25);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(0);
+    }
+
+    .success-banner {
+      display: none;
+      background: #eafaf1;
+      border: 1px solid #27ae60;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      color: #1e8449;
+      margin-top: 16px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Student Registration</h2>
+    <p class="subtitle">Fill in all fields to register</p>
+
+    <form id="registrationForm" onsubmit="return validateForm(event)">
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter your full name">
+        <span class="error-msg" id="nameError">Name must not be empty.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="text" id="email" placeholder="Enter your email">
+        <span class="error-msg" id="emailError">Enter a valid email address.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Minimum 6 characters">
+        <span class="error-msg" id="passwordError">Password must be at least 6 characters.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="mobile">Mobile Number</label>
+        <input type="text" id="mobile" placeholder="Enter 10-digit mobile number" maxlength="10">
+        <span class="error-msg" id="mobileError">Enter a valid 10-digit mobile number.</span>
+      </div>
+
+      <button type="submit">Register</button>
+
+      <div class="success-banner" id="successBanner">
+        ✅ Form submitted successfully!
+      </div>
+
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
