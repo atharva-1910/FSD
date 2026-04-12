@@ -1,201 +1,185 @@
 import React, { useState } from 'react';
-// Step 1: Import your new profile image
 import profileImage from './pic.png'; 
 
 function App() {
-  const [formData, setFormData] = useState({ username: '', email: '', bio: '' });
+  const [formData, setFormData] = useState({ 
+    username: '', email: '', phone: '', collegeId: '', dept: '', bio: '' 
+  });
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
   const validate = () => {
     let tempErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+
     if (!formData.username.trim()) tempErrors.username = true;
+    if (!formData.collegeId.trim()) tempErrors.collegeId = true;
+    if (!formData.dept.trim()) tempErrors.dept = true;
     if (!formData.bio.trim()) tempErrors.bio = true;
-    if (!formData.email.trim()) {
-      tempErrors.email = "required";
-    } else if (!emailRegex.test(formData.email)) {
-      tempErrors.email = "invalid";
-    }
+    
+    if (!emailRegex.test(formData.email)) tempErrors.email = true;
+    if (!phoneRegex.test(formData.phone)) tempErrors.phone = true;
+
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(false);
-    if (validate()) {
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 5000); 
-    }
+    if (validate()) setSubmitted(true);
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: false });
-    }
-  };
+  const handlePrint = () => window.print();
 
   const styles = {
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
+    wrapper: {
+      backgroundColor: '#f8fafc',
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      color: '#d1d5db',
-      padding: '20px'
+      padding: '40px 20px',
+      fontFamily: "'Inter', 'Segoe UI', sans-serif",
+      color: '#1e293b'
     },
-    profileHeader: {
+    container: {
+      maxWidth: '700px',
+      margin: '0 auto',
+      backgroundColor: '#ffffff',
+      padding: '40px',
+      borderRadius: '8px',
+      border: '1px solid #e2e8f0',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+    },
+    header: {
       display: 'flex',
-      flexDirection: 'column',
       alignItems: 'center',
+      gap: '25px',
+      borderBottom: '2px solid #3b82f6',
+      paddingBottom: '20px',
       marginBottom: '30px'
     },
     avatar: {
-      width: '120px',
-      height: '120px',
-      borderRadius: '50%',
-      border: '4px solid #3b82f6',
-      // Step 2: Set the imported profile image
-      backgroundImage: `url(${profileImage})`, 
+      width: '100px',
+      height: '100px',
+      borderRadius: '8px',
+      backgroundImage: `url(${profileImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      marginBottom: '15px',
-      boxShadow: '0 4px 15px rgba(0,0,0,0.4)'
+      border: '1px solid #cbd5e1'
     },
-    card: {
-      background: '#1f2937',
-      padding: '40px',
-      borderRadius: '20px',
-      boxShadow: '0 15px 35px rgba(0,0,0,0.5)',
+    grid: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '20px'
+    },
+    inputGroup: { marginBottom: '15px' },
+    label: { display: 'block', fontSize: '13px', fontWeight: '600', color: '#64748b', marginBottom: '5px' },
+    input: (err) => ({
       width: '100%',
-      maxWidth: '450px',
-      textAlign: 'left',
-      position: 'relative',
-      border: '1px solid #374151'
-    },
-    title: {
-      margin: '0 0 10px 0',
-      color: '#f3f4f6',
-      fontSize: '28px',
-      fontWeight: 'bold',
-      textAlign: 'center'
-    },
-    subtitle: {
-      textAlign: 'center',
-      fontSize: '14px',
-      color: '#9ca3af',
-      marginBottom: '30px',
-      margin: 0
-    },
-    inputGroup: { marginBottom: '25px' },
-    label: { display: 'block', marginBottom: '8px', color: '#9ca3af', fontWeight: '600', fontSize: '14px' },
-    input: (isError) => ({
-      width: '100%',
-      padding: '14px',
-      borderRadius: '10px',
-      border: isError ? '2px solid #ef4444' : '1px solid #374151',
-      fontSize: '16px',
-      boxSizing: 'border-box',
-      transition: 'all 0.3s ease',
-      outline: 'none',
-      backgroundColor: isError ? '#1e293b' : '#374151', 
-      color: '#f3f4f6'
+      padding: '10px',
+      border: `1px solid ${err ? '#ef4444' : '#cbd5e1'}`,
+      borderRadius: '6px',
+      fontSize: '15px',
+      boxSizing: 'border-box'
     }),
-    button: {
-      width: '100%',
-      padding: '16px',
+    btnPrimary: {
       backgroundColor: '#3b82f6',
       color: 'white',
+      padding: '12px 24px',
       border: 'none',
-      borderRadius: '10px',
-      fontSize: '17px',
-      fontWeight: 'bold',
+      borderRadius: '6px',
+      fontWeight: '600',
       cursor: 'pointer',
-      transition: 'background 0.3s ease, transform 0.1s ease',
-      boxShadow: '0 5px 15px rgba(59, 130, 246, 0.4)'
+      marginRight: '10px'
     },
-    errorText: { color: '#ef4444', fontSize: '12px', marginTop: '6px' },
-    successBox: {
-      backgroundColor: '#059669', 
+    btnSecondary: {
+      backgroundColor: '#64748b',
       color: 'white',
-      padding: '15px',
-      borderRadius: '12px',
-      textAlign: 'center',
-      fontSize: '14px',
-      border: '1px solid #047857',
-      marginBottom: '20px'
+      padding: '12px 24px',
+      border: 'none',
+      borderRadius: '6px',
+      fontWeight: '600',
+      cursor: 'pointer'
     }
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.profileHeader}>
-        {/* Your new profile avatar with correct image setting */}
-        <div style={styles.avatar}></div>
-        <h1 style={styles.title}>Atharva’s Developer Profile</h1>
-        <p style={styles.subtitle}>FSD Assignment (A5) Form Submission</p>
-      </div>
+    <div style={styles.wrapper}>
+      {/* Hidden during normal view, visible during print via global CSS below */}
+      <style>
+        {`
+          @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+            .print-container { 
+              box-shadow: none !important; 
+              border: none !important; 
+              width: 100% !important;
+              max-width: 100% !important;
+              padding: 0 !important;
+            }
+          }
+        `}
+      </style>
 
-      <div style={styles.card}>
-        
+      <div style={styles.container} className="print-container">
+        <div style={styles.header}>
+          <div style={styles.avatar}></div>
+          <div>
+            <h1 style={{ margin: 0, fontSize: '24px' }}>Student Profile: {formData.username || 'Atharva Hemade'}</h1>
+            <p style={{ margin: '5px 0 0', color: '#64748b' }}>FSD Assignment A5 - Official Submission</p>
+          </div>
+        </div>
+
         {submitted && (
-          <div style={styles.successBox}>
-            ⚡ Profile updated successfully!
+          <div style={{ color: '#15803d', backgroundColor: '#f0fdf4', padding: '10px', marginBottom: '20px', borderRadius: '6px' }} className="no-print">
+            ✅ Form Validated. Ready for Print.
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Full Name</label>
-            <input
-              name="username"
-              placeholder="e.g. Atharva Hemade"
-              value={formData.username}
-              onChange={handleChange}
-              style={styles.input(errors.username)}
-            />
+          <div style={styles.grid}>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>Full Name</label>
+              <input name="username" style={styles.input(errors.username)} value={formData.username} onChange={(e) => setFormData({...formData, username: e.target.value})} />
+            </div>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>College ID</label>
+              <input name="collegeId" placeholder="e.g. 2021001" style={styles.input(errors.collegeId)} value={formData.collegeId} onChange={(e) => setFormData({...formData, collegeId: e.target.value})} />
+            </div>
+          </div>
+
+          <div style={styles.grid}>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>Email</label>
+              <input name="email" style={styles.input(errors.email)} value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+            </div>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>Phone Number</label>
+              <input name="phone" placeholder="10 Digits" style={styles.input(errors.phone)} value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+            </div>
           </div>
 
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Professional Email</label>
-            <input
-              name="email"
-              placeholder="hemadeatharva@gmail.com"
-              value={formData.email}
-              onChange={handleChange}
-              style={styles.input(errors.email)}
-            />
-            {errors.email === "invalid" && <div style={styles.errorText}>This email format is invalid.</div>}
+            <label style={styles.label}>Department</label>
+            <select style={styles.input(errors.dept)} value={formData.dept} onChange={(e) => setFormData({...formData, dept: e.target.value})}>
+              <option value="">Select Dept</option>
+              <option value="CS">Computer Science</option>
+              <option value="IT">Information Technology</option>
+              <option value="AI">Artificial Intelligence</option>
+            </select>
           </div>
 
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Developer Bio</label>
-            <textarea
-              name="bio"
-              rows="4"
-              placeholder="Tell us about your tech stack and experience..."
-              value={formData.bio}
-              onChange={handleChange}
-              style={{ ...styles.input(errors.bio), resize: 'none' }}
-            />
+            <label style={styles.label}>Professional Bio</label>
+            <textarea rows="4" style={styles.input(errors.bio)} value={formData.bio} onChange={(e) => setFormData({...formData, bio: e.target.value})} />
           </div>
 
-          <button 
-            type="submit" 
-            style={styles.button}
-            onMouseOver={(e) => e.target.style.background = '#2563eb'}
-            onMouseOut={(e) => e.target.style.background = '#3b82f6'}
-          >
-            UPDATE PROFILE
-          </button>
+          <div className="no-print" style={{ marginTop: '20px' }}>
+            <button type="submit" style={styles.btnPrimary}>VALIDATE FORM</button>
+            {submitted && <button type="button" onClick={handlePrint} style={styles.btnSecondary}>PRINT TO PDF</button>}
+          </div>
         </form>
       </div>
-
     </div>
   );
 }
