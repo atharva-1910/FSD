@@ -1,5 +1,3 @@
-
-
 function showError(fieldId, errorId, message) {
   var field = document.getElementById(fieldId);
   var errorSpan = document.getElementById(errorId);
